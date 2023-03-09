@@ -1,0 +1,29 @@
+{% extends 'base-layout.html' %}
+
+{% block head %}<title>Register</title>{% endblock %}
+
+{% block content %}
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 mx-auto pt-5">
+              <h1>Register Page</h1>
+              <form action="{{ url_for('views.register') }}" method="post">
+                  <div class="mb-3">
+                      <label for="login-input-username" class="form-label">Username</label>
+                      <input type="text" class="form-control" id="login-input-username" name="username">
+                  </div>
+                  <div class="mb-3">
+                      <label for="login-input-password" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="login-input-password" name="password">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Register</button>
+              </form>
+              <p class="text-center">
+                  Already have an account? <a href="{{ url_for('views.index') }}">Log In Here</a>!
+              </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
