@@ -1,0 +1,30 @@
+{% extends 'base-layout.html' %}
+
+{% block head %}<title>Login</title>{% endblock %}
+
+{% block content %}
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 mx-auto pt-5">
+            <h1>Welcome!</h1>
+            <p class="lead">Please log in to use this service.</p>
+            <form action="{{ url_for('login') }}" method="post">
+                <div class="mb-3">
+                  <label for="login-input-username" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="login-input-username" name="username">
+                </div>
+                <div class="mb-3">
+                  <label for="login-input-password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="login-input-password" name="password">
+                </div>
+                <button type="submit" class="btn btn-primary">Log In</button>
+              </form>
+              <p class="text-center mt-5">
+                Don't have an account? <a href="{{ url_for('register') }}">Register Now</a>!
+              </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
