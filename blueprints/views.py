@@ -6,6 +6,7 @@ views_bp = Blueprint(name='views', import_name=__name__, template_folder='templa
 
 @views_bp.route('/', methods=['GET'])
 def index():
+    """ Default landing route """
     return render_template('index.html', year=year)
 
 @views_bp.route('/register', methods=['GET', 'POST'])
