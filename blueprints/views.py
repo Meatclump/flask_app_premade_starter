@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, url_for, render_template, request, session
+from datetime import date
 year = date.today().year #sample variable to send to templates
 
 views_bp = Blueprint(name='views', import_name=__name__, template_folder='templates')
@@ -13,6 +14,7 @@ def register():
     return render_template('register.html', year=year)
 
 @views_bp.route('/login', methods=['GET', 'POST'])
+def login():
     """ Route for logging in """
     return render_template('login.html', year=year)
 
@@ -28,4 +30,4 @@ def logout():
 
 @views_bp.errorhandler(404)
 def not_found(e):
-    return render_template(404.html, year=year)
+    return render_template('404.html', year=year)
