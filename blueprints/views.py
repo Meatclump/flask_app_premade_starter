@@ -26,7 +26,7 @@ def logout():
         print(f"User logging out: '{username}'")
 
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('views.index'))
 
 @views_bp.errorhandler(404)
 def not_found(e):
