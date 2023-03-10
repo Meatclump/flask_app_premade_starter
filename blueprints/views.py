@@ -12,6 +12,14 @@ def index():
 @views_bp.route('/register', methods=['GET', 'POST'])
 def register():
     """ Route for user registration """
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        db_interface.register_user_to_db(username, password)
+
+        return redirect(url_for('views.index'))
+        
     return render_template('register.html', year=year)
 
 @views_bp.route('/login', methods=['GET', 'POST'])
