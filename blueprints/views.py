@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, url_for, render_template, request, session
 from datetime import date
+import modules.db_interface as db_interface
 year = date.today().year #sample variable to send to templates
 
 views_bp = Blueprint(name='views', import_name=__name__, template_folder='templates')
