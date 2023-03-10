@@ -9,6 +9,13 @@
             <div class="col-xl-6 mx-auto pt-5">
             <h1>Welcome!</h1>
             <p class="lead">Please log in to use this service.</p>
+            {% if err is defined %}
+            <ul class="p-0">
+            {% for line in err %}
+              <li class="bg-danger text-light p-3 my-2 rounded">{{ line }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
             <form action="{{ url_for('views.login') }}" method="post">
                 <div class="mb-3">
                   <label for="login-input-username" class="form-label">Username</label>

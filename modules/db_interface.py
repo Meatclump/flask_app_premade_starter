@@ -18,26 +18,34 @@ def register_user_to_db(username: str, password: str) -> None:
 
 def verify_user(username: str, password: str) -> bool:
     """Check if a user exists in the database"""
+
+    if username == "" or password == "":
+        return False
+
     con = sqlite3.connect('test.db')
     cur = con.cursor()
     cur.execute('SELECT username, password FROM users WHERE username=? and password=?', (username, password))
 
     result = cur.fetchone()
     
+    # If we find a user
     if result:
         return True
 
+    # We did not find a user
     return False
 
 def user_exists(username: str) -> bool:
     """ Check if a user exists in the database """
     con = sqlite3.connect('test.db')
     cur = con.cursor()
-    cur.execute('SELECT username FROM users WHERE username=?', (username))
+    cur.execute('SELECT username FROM users WHERE username=?', (username,))
 
     result = cur.fetchone()
 
+    # If we find the username
     if result:
         return True
 
+    # We did not find the username
     return False

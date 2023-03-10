@@ -19,16 +19,40 @@ def index():
 @views_bp.route('/home', methods=['GET'])
 def home():
     """ A logged in user will end up here """
+    
+    # Check if user is logged in
     if 'username' in session:
+        # The user is logged in. Show their home page
         username = session['username']
-    return render_template('home.html', year=year, username=username)
+        return render_template('home.html', year=year, username=username)
+
+    # This shouldn't happen, but better safe than sorry
+    return redirect(url_for('views.index'))
 
 @views_bp.route('/register', methods=['GET', 'POST'])
 def register():
     """ Route for user registration """
+
+    # The register button has been pressed. Verify input and create user if valid
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        error_list = []
+
+        if db_interface.user_exists(username):
+            error_list.append(f"The username '{username}' already exists. Please choose a different one.")
+        
+        if len(username) < 3:
+            error_list.append(f"Your username may not be shorter than 3 characters.")
+        
+        if username.isalpha() is False:
+            error_list.append(f"Your username may only use english alphabetic characters")
+        
+        if len(password) < 6:
+            error_list.append(f"Your password must be at least 6 characters. Please choose a different one.")
+        
+        if len(error_list)  > 0:
+            return render_template('register.html', err=error_list)
 
         db_interface.register_user_to_db(username, password)
         print(f"Registered new user: '{username}'")
@@ -40,6 +64,7 @@ def register():
 @views_bp.route('/login', methods=['GET', 'POST'])
 def login():
     """ Route for logging in """
+    error_list = []
 
     # Post request
     if request.method == "POST":
@@ -50,10 +75,13 @@ def login():
         if db_interface.verify_user(username, password):
             session['username'] = username
         
-        return redirect(url_for('views.home'))
+            print(f"User logged in: '{username}'")
+            return redirect(url_for('views.home'))
+        else:
+            error_list.append("Incorrect username or password.")
     
     # Get request
-    return render_template('login.html')
+    return render_template('login.html', err=error_list)
 
 @views_bp.route('/logout')
 def logout():
