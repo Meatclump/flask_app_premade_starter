@@ -2,6 +2,7 @@ from flask import Blueprint, redirect, url_for, render_template, request, sessio
 from flask_bcrypt import generate_password_hash
 from datetime import date
 import modules.db_interface as db_interface
+import modules.validator as validator
 year = date.today().year #sample variable to send to templates
 
 views_bp = Blueprint(name='views', import_name=__name__, template_folder='templates')
@@ -27,7 +28,7 @@ def home():
         username = session['username']
         return render_template('home.html', year=year, username=username)
 
-    # This shouldn't happen, but better safe than sorry
+    # If user is not logged in, redirect back to index
     return redirect(url_for('views.index'))
 
 @views_bp.route('/register', methods=['GET', 'POST'])
@@ -38,23 +39,13 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        error_list = []
 
-        if db_interface.user_exists(username):
-            error_list.append(f"The username '{username}' already exists. Please choose a different one.")
-        
-        if len(username) < 3:
-            error_list.append(f"Your username may not be shorter than 3 characters.")
-        
-        if username.isalpha() is False:
-            error_list.append(f"Your username may only use english alphabetic characters")
-        
-        if len(password) < 6:
-            error_list.append(f"Your password must be at least 6 characters. Please choose a different one.")
-        
-        if len(error_list)  > 0:
+        # Validate input and send any errors to view
+        error_list = validator.validate_new_user(username, password)
+        if len(error_list) > 0:
             return render_template('register.html', err=error_list)
 
+        # Store new user and redirect to index for login
         pw_hash = generate_password_hash(password, 10)
         db_interface.register_user_to_db(username, pw_hash)
         print(f"Registered new user: '{username}'")
