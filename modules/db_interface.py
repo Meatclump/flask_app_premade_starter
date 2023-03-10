@@ -28,8 +28,6 @@ def verify_user(username: str, password: str) -> bool:
     cur.execute('SELECT username, password FROM users WHERE username=?', (username,))
 
     result = cur.fetchone()
-
-    print(result[1])
     
     # If we find a user
     if result:
