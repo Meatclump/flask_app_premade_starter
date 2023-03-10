@@ -16,7 +16,7 @@ def register_user_to_db(username: str, password: str) -> None:
     con.commit()
     con.close()
 
-def check_user(username: str, password: str) -> bool:
+def verify_user(username: str, password: str) -> bool:
     """Check if a user exists in the database"""
     con = sqlite3.connect('test.db')
     cur = con.cursor()
@@ -24,6 +24,19 @@ def check_user(username: str, password: str) -> bool:
 
     result = cur.fetchone()
     
+    if result:
+        return True
+
+    return False
+
+def user_exists(username: str) -> bool:
+    """ Check if a user exists in the database """
+    con = sqlite3.connect('test.db')
+    cur = con.cursor()
+    cur.execute('SELECT username FROM users WHERE username=?', (username))
+
+    result = cur.fetchone()
+
     if result:
         return True
 
