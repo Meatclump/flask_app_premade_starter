@@ -18,9 +18,10 @@ def register():
         password = request.form['password']
 
         db_interface.register_user_to_db(username, password)
+        print(f"Registered new user: '{username}'")
 
         return redirect(url_for('views.index'))
-        
+
     return render_template('register.html', year=year)
 
 @views_bp.route('/login', methods=['GET', 'POST'])
