@@ -48,6 +48,8 @@ def register():
         # Store new user and redirect to index for login
         pw_hash = generate_password_hash(password, 10)
         db_interface.register_user_to_db(username, pw_hash)
+
+        # Print registration to terminal
         print(f"Registered new user: '{username}'")
 
         return redirect(url_for('views.index'))
@@ -68,6 +70,7 @@ def login():
         if db_interface.verify_user(username, password):
             session['username'] = username
         
+            # Print login to terminal
             print(f"User logged in: '{username}'")
             return redirect(url_for('views.home'))
         else:
@@ -79,6 +82,8 @@ def login():
 @views_bp.route('/logout')
 def logout():
     """ Route for logging out """
+
+    # Print logout to terminal
     if 'username' in session:
         username = session['username']
         print(f"User logging out: '{username}'")
