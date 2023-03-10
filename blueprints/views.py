@@ -8,7 +8,20 @@ views_bp = Blueprint(name='views', import_name=__name__, template_folder='templa
 @views_bp.route('/', methods=['GET'])
 def index():
     """ Default landing route """
-    return render_template('index.html', year=year)
+
+    # If username is set in session, show logged in home page
+    if 'username' in session:
+        return redirect(url_for('views.home'))
+
+    # redirect to login page if user is not logged in
+    return redirect(url_for('views.login'))
+
+@views_bp.route('/home', methods=['GET'])
+def home():
+    """ A logged in user will end up here """
+    if 'username' in session:
+        username = session['username']
+    return render_template('home.html', year=year, username=username)
 
 @views_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -27,7 +40,20 @@ def register():
 @views_bp.route('/login', methods=['GET', 'POST'])
 def login():
     """ Route for logging in """
-    return render_template('login.html', year=year)
+
+    # Post request
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+
+        # If username and password matches database, set in session and redirect to index
+        if db_interface.check_user(username, password):
+            session['username'] = username
+        
+        return redirect(url_for('views.home'))
+    
+    # Get request
+    return render_template('login.html')
 
 @views_bp.route('/logout')
 def logout():
