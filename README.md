@@ -8,3 +8,10 @@ Rename `sample_config.json` to `config.json` and set a secret key
 
 Set the environment variable `FLASK_APP=app`,  and start app with `flask run`
 
+## Dependencies
+Pip packages:
+- flask 2.2.x
+- flask-bcrypt 1.0.1
+
+Non pip packages
+- sqlite3 3.31.1
