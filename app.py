@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config.update(settings)
 
 app.register_blueprint(views_bp)
+db_interface.init_users_table()
 
 if __name__ == "__main__":
     app.run(debug=True)
