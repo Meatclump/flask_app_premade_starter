@@ -47,7 +47,7 @@ def login():
         password = request.form['password']
 
         # If username and password matches database, set in session and redirect to index
-        if db_interface.check_user(username, password):
+        if db_interface.verify_user(username, password):
             session['username'] = username
         
         return redirect(url_for('views.home'))
