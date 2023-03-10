@@ -1,4 +1,5 @@
 import sqlite3
+from flask_bcrypt import check_password_hash
 
 def init_users_table() -> None:
     """Ensure the database and users table exists"""
@@ -24,13 +25,17 @@ def verify_user(username: str, password: str) -> bool:
 
     con = sqlite3.connect('test.db')
     cur = con.cursor()
-    cur.execute('SELECT username, password FROM users WHERE username=? and password=?', (username, password))
+    cur.execute('SELECT username, password FROM users WHERE username=?', (username,))
 
     result = cur.fetchone()
+
+    print(result[1])
     
     # If we find a user
     if result:
-        return True
+        pw_hash = result[1]
+        if check_password_hash(pw_hash, password):
+            return True
 
     # We did not find a user
     return False

@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, url_for, render_template, request, session
+from flask_bcrypt import generate_password_hash
 from datetime import date
 import modules.db_interface as db_interface
 year = date.today().year #sample variable to send to templates
@@ -54,7 +55,8 @@ def register():
         if len(error_list)  > 0:
             return render_template('register.html', err=error_list)
 
-        db_interface.register_user_to_db(username, password)
+        pw_hash = generate_password_hash(password, 10)
+        db_interface.register_user_to_db(username, pw_hash)
         print(f"Registered new user: '{username}'")
 
         return redirect(url_for('views.index'))
