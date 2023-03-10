@@ -1,5 +1,5 @@
 # flask_app_premade_starter
-Flask app set up with basic login system and view blueprints.
+Python Flask app set up with basic login system and view blueprints.
 
 [Flask documentation](https://flask.palletsprojects.com/en/2.2.x/)
 
